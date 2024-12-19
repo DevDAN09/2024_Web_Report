@@ -1,0 +1,95 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title 게시글 작성 
+        style.
+            .new-post {
+                width: 80%;
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            input[type="text"], textarea {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                box-sizing: border-box;
+            }
+            textarea {
+                height: 200px;
+                resize: vertical;
+            }
+            .button-container {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            .btn {
+                padding: 8px 15px;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                text-decoration: none;
+                color: white;
+            }
+            .btn-submit {
+                background-color: #4CAF50;
+            }
+            .btn-cancel {
+                background-color: #666;
+            }
+            .image-preview {
+                max-width: 300px;
+                margin: 10px 0;
+            }
+            .file-input-container {
+                margin: 10px 0;
+            }
+            .error-message {
+                color: #f44336;
+                margin-bottom: 10px;
+                padding: 8px;
+                background-color: #ffebee;
+                border-radius: 3px;
+                text-align: center;
+            }
+    body
+        div.new-post
+            h3 새 게시글 작성
+            if error
+                div.error-message #{error}
+            form(action="/new" method="POST" enctype="multipart/form-data")
+                input(type="text" name="title" placeholder="제목" required value=title)
+                textarea(name="content" placeholder="내용을 입력하세요" required)= content
+                div.file-input-container
+                    label(for="image") 이미지 첨부:
+                    input(type="file" name="image" id="image" accept="image/*")
+                    img#preview.image-preview(style="display: none;")
+                div.button-container
+                    a.btn.btn-cancel(href="/board") 취소
+                    button.btn.btn-submit(type="submit") 작성하기
+
+        script.
+            // 이미지 미리보기 기능
+            const imageInput = document.getElementById('image');
+            const preview = document.getElementById('preview');
+            
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+

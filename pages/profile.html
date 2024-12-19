@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>프로필 페이지</title>
+    <style>
+        .post-list {
+            margin: 20px 0;
+        }
+        .post-item {
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .post-item:hover {
+            background-color: #f5f5f5;
+        }
+        .user-info {
+            background: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .comment-form {
+            margin: 10px 0;
+        }
+        .comments {
+            margin-left: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 3px;
+        }
+        .comment {
+            border-bottom: 1px solid #eee;
+            padding: 5px;
+        }
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin-right: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            width: 200px;
+        }
+        .home-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+        .home-link:hover {
+            color: #333;
+        }
+        .post-content {
+            margin: 10px 0;
+        }
+        .post-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .profile-header {
+            margin-bottom: 20px;
+        }
+        .profile-info {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .profile-info p {
+            margin: 8px 0;
+            color: #333;
+        }
+        .profile-info strong {
+            color: #666;
+            width: 120px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-info">
+        <h1>프로필 페이지</h1>
+        <div id="userDetails">
+            <<!-- 동적으로 삽입 -->>
+        </div>
+    </div>
+    
+    <div class="post-list">
+        <h3>작성한 게시글 목록</h3>
+        <div id="postList">
+            <<!-- 동적으로 삽입 -->>
+        </div>
+    </div>
+    
+    <a href="/" class="home-link">홈으로 돌아가기</a>
+
+    <script>
+        async function loadProfileData() {
+            try {
+                const response = await fetch('/profile/info');
+                const data = await response.json();
+                
+                console.log(data);
+                // 사용자 정보 표시
+                const userDetails = document.getElementById('userDetails');
+                userDetails.innerHTML = `
+                    <div class="profile-header">
+                        <h2>${data.user.name}님의 프로필</h2>
+                        <div class="profile-info">
+                            <p><strong>로그인 ID:</strong> ${data.user.user_id}</p>
+                            <p><strong>사용자 이름:</strong> ${data.user.name}</p>
+                            <p><strong>이메일:</strong> ${data.user.email}</p>
+                            <p><strong>작성한 게시글:</strong> ${data.postCount}개</p>
+                        </div>
+                    </div>
+                `;
+
+                // 게시글 목록 표시
+                const postList = document.getElementById('postList');
+                if (data.posts && data.posts.length > 0) {
+                    postList.innerHTML = data.posts.map(post => `
+                        <div class="post-item" onclick="location.href='/board/${post.id}'">
+                            <h4>${post.title}</h4>
+                            <p class="post-content">${post.content.substring(0, 100)}...</p>
+                            <small class="post-date">${new Date(post.createdAt).toLocaleDateString()}</small>
+                            
+                            ${post.Comments && post.Comments.length > 0 ? `
+                                <div class="comments">
+                                    <h5>댓글 (${post.Comments.length})</h5>
+                                    ${post.Comments.map(comment => `
+                                        <div class="comment">
+                                            <p>${comment.content}</p>
+                                            <small>작성자: ${comment.User.name} | ${new Date(comment.createdAt).toLocaleDateString()}</small>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `).join('');
+                } else {
+                    postList.innerHTML = '<p>작성한 게시글이 없습니다.</p>';
+                }
+            } catch (error) {
+                console.error('프로필 데이터 로드 실패:', error);
+            }
+        }
+
+        // 페이지 로드 시 데이터 가져오기
+        window.addEventListener('load', loadProfileData);
+    </script>
+</body>
+</html> 

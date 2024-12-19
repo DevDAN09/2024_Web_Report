@@ -1,0 +1,100 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title 2024 WEB REPORT
+        style.
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 50px;
+                margin: 20px;
+            }
+            .left-content {
+                flex: 1;
+                max-width: 500px;
+            }
+            .right-content {
+                flex: 1;
+                max-width: 400px;
+            }
+            .user-info, .login-form {
+                width: 300px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .login-form input {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                box-sizing: border-box;
+            }
+            .btn {
+                width: 100%;
+                padding: 8px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+                margin-top: 10px;
+                box-sizing: border-box;
+            }
+            .btn:hover {
+                background-color: #45a049;
+            }
+            .btn-blue {
+                background-color: #2196F3;
+            }
+            .btn-blue:hover {
+                background-color: #1976D2;
+            }
+            .btn-red {
+                background-color: #f44336;
+            }
+            .btn-red:hover {
+                background-color: #da190b;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            .error-message {
+                color: #f44336;
+                margin-bottom: 10px;
+                padding: 8px;
+                background-color: #ffebee;
+                border-radius: 3px;
+                text-align: center;
+            }
+    body
+        h1 2024 WEB REPORT
+        p 20193018 윤영민 과제입니다.
+        div.container
+            div.left-content
+                if user
+                    div.user-info
+                        p #{user.name}님 환영합니다!
+                        form(action="/logout" method="get")
+                            button.btn.btn-red(type="submit") 로그아웃
+                        a.btn.btn-blue(href="/profile") 프로필 보기
+                        a.btn(href="/board") 게시글 보러가기
+                else
+                    div.login-form
+                        if loginError
+                            div.error-message #{loginError}
+                        form(action="/" method="post")
+                            input(type="text" name="user_id" placeholder="아이디를 입력하세요")
+                            input(type="password" name="password" placeholder="비밀번호를 입력하세요")
+                            button.btn(type="submit") 로그인
+                            a.btn.btn-blue(href="/account") 회원가입하기
+            div.right-content
+                img(src="/images/dogWithApple.png" alt="dogWithApple")
