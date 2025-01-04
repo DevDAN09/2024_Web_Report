@@ -1,0 +1,114 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title 게시글 수정
+        style.
+            .edit-form {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            input, textarea {
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 8px;
+                border: 1px solid #ddd;
+                border-radius: 3px;
+                box-sizing: border-box;
+            }
+            textarea {
+                height: 200px;
+                resize: vertical;
+            }
+            .button-container {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                margin-top: 15px;
+            }
+            .btn {
+                padding: 8px 15px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+                text-decoration: none;
+                color: white;
+            }
+            .btn-update {
+                background-color: #4CAF50;
+            }
+            .btn-delete {
+                background-color: #f44336;
+            }
+            .btn-cancel {
+                background-color: #666;
+            }
+            .current-image {
+                max-width: 300px;
+                margin: 10px 0;
+            }
+            .image-preview {
+                max-width: 300px;
+                margin: 10px 0;
+                display: none;
+            }
+    body
+        div.edit-form
+            h2 게시글 수정
+            form(action=`/edit/${post.id}` method="POST" enctype="multipart/form-data")
+                input(type="text" name="title" value=post.title required)
+                textarea(name="content" required)= post.content
+                
+                if post.img
+                    div
+                        p 현재 이미지:
+                        img.current-image(src=post.img alt="현재 이미지")
+                        div
+                            input(type="checkbox" name="deleteImage" id="deleteImage")
+                            label(for="deleteImage") 이미지 삭제
+                
+                div
+                    label(for="image") 새 이미지 업로드:
+                    input(type="file" name="image" id="image" accept="image/*")
+                    img#preview.image-preview(alt="미리보기")
+                
+                div.button-container
+                    a.btn.btn-cancel(href="/board") 취소
+                    button.btn.btn-delete(type="button" onclick=`deletePost(${post.id})`) 삭제
+                    button.btn.btn-update(type="submit") 수정
+
+        script.
+            // 이미지 미리보기
+            const imageInput = document.getElementById('image');
+            const preview = document.getElementById('preview');
+            
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 게시글 삭제 함수 수정
+            function deletePost(postId) {
+                if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
+                    fetch(`/edit/delete/${postId}`, {
+                        method: 'DELETE',
+                    }).then(response => {
+                        if (response.ok) {
+                            window.location.href = '/board';
+                        } else {
+                            alert('삭제 실패');
+                        }
+                    });
+                }
+            }

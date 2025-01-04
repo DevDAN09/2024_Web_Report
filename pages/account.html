@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>회원가입</title>
+        <style>
+            body {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 20px;
+            }
+            .signup-form {
+                width: 300px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                background: white;
+            }
+            .signup-form input {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                box-sizing: border-box;
+            }
+            .signup-form input:focus {
+                outline: none;
+                border-color: #2196F3;
+                box-shadow: 0 0 5px rgba(33,150,243,0.3);
+            }
+            .btn {
+                width: 100%;
+                padding: 8px;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+                margin-top: 10px;
+                box-sizing: border-box;
+                font-size: 1em;
+                transition: all 0.3s ease;
+            }
+            .btn-green {
+                background-color: #4CAF50;
+            }
+            .btn-green:hover {
+                background-color: #45a049;
+                transform: translateY(-2px);
+            }
+            h1 {
+                color: #333;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            p {
+                color: #666;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>회원가입</h1>
+            <p>20193018 윤영민 과제입니다.</p>
+            <form id="signup-form" action="/register" method="POST" class="signup-form">
+                <input type="text" name="email" placeholder="이메일을 입력하세요" required>
+                <input type="text" name="name" placeholder="이름을 입력하세요" required>
+                <input type="text" name="user_id" placeholder="아이디를 입력하세요" required>
+                <input type="password" name="password" placeholder="비밀번호를 입력하세요" required>
+                <button type="submit" class="btn btn-green">회원가입</button>
+            </form>
+        </div>
+    </body>
+</html>

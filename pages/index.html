@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>2024 WEB REPORT</title>
+        <style>
+            .container {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                gap: 50px;
+                margin: 20px;
+            }
+            .left-content {
+                flex: 1;
+                max-width: 500px;
+            }
+            .right-content {
+                flex: 1;
+                max-width: 400px;
+            }
+            .login-form {
+                width: 300px;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .login-form input {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                box-sizing: border-box;
+            }
+            .login-form button, .signup-btn {
+                width: 100%;
+                padding: 8px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+                margin-top: 10px;
+                box-sizing: border-box;
+            }
+            .login-form button:hover, .signup-btn:hover {
+                background-color: #45a049;
+            }
+            .signup-btn {
+                background-color: #2196F3;
+            }
+            .signup-btn:hover {
+                background-color: #1976D2;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>2024 WEB REPORT</h1>
+        <p>20193018 윤영민 과제입니다.</p>
+        <div class="container">
+            <div class="left-content">
+                <form action="/" method="post" class="login-form">
+                    <input type="text" name="user_id" placeholder="이름을 입력하세요">
+                    <input type="password" name="password" placeholder="비밀번호를 입력하세요">
+                    <button type="submit">로그인</button>
+                    <a href="/account" class="signup-btn">회원가입하기</a>
+                </form>
+            </div>
+            <div class="right-content">
+                <img src="/images/dogWithApple.png" alt="dogWithApple">
+            </div>
+        </div>
+    </body>
+</html>

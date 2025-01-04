@@ -1,0 +1,167 @@
+doctype html
+html
+    head
+        meta(charset="utf-8")
+        title 게시판
+        style.
+            body {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            .search-form {
+                margin: 20px 0;
+                padding: 15px;
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            .search-input {
+                padding: 8px;
+                width: 300px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                margin-right: 10px;
+            }
+            .post-container {
+                margin: 20px 0;
+            }
+            .post {
+                border: 1px solid #ddd;
+                margin: 15px 0;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                background: white;
+            }
+            .post-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .comments {
+                margin: 15px 0;
+                padding: 15px;
+                background: #f8f9fa;
+                border-radius: 5px;
+            }
+            .comment {
+                padding: 10px;
+                border-bottom: 1px solid #eee;
+            }
+            .comment:last-child {
+                border-bottom: none;
+            }
+            .btn {
+                padding: 8px 15px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                text-align: center;
+                margin: 5px;
+            }
+            .btn:hover {
+                background-color: #45a049;
+            }
+            .btn-blue {
+                background-color: #2196F3;
+            }
+            .btn-blue:hover {
+                background-color: #1976D2;
+            }
+            .comment-form {
+                margin-top: 15px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+            .comment-form input {
+                flex: 1;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                min-width: 0;
+            }
+            .comment-form button {
+                white-space: nowrap;
+                margin: 0;
+            }
+            .edit-btn {
+                padding: 5px 10px;
+                background-color: #2196F3;
+                color: white;
+                text-decoration: none;
+                border-radius: 12px;
+                font-size: 0.9em;
+                margin-left: auto;
+            }
+            .edit-btn:hover {
+                background-color: #1976D2;
+            }
+            .navigation {
+                margin: 20px 0;
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+                width: 100%;
+                padding: 10px 0;
+            }
+            .post-image {
+                max-width: 100%;
+                height: auto;
+                margin: 15px 0;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+    body
+        h1 게시판
+
+        div.navigation
+            a.btn.btn-blue(href="/new") 새 게시글 작성
+            a.btn(href="/") 홈으로 돌아가기
+        
+        div.search-form
+            form(action="/board/search" method="GET")
+                input.search-input(type="text" name="keyword" placeholder="작성자 또는 내용 검색" value=keyword)
+                button.btn(type="submit") 검색
+                if keyword
+                    a.btn.btn-blue(href="/board") 전체보기
+
+        div.post-container
+            if posts && posts.length > 0
+                each post in posts
+                    div.post(onclick=`location.href='/board/${post.id}'`)
+                        div.post-header
+                            div.post-title-author
+                                h3= post.title
+                                span 작성자: #{post.User ? post.User.name : '알 수 없음'} | #{new Date(post.createdAt).toLocaleDateString()}
+                            if user && user.number === post.userId
+                                a.edit-btn(href=`/edit/${post.id}`) 수정
+
+                        p= post.content
+                        if post.img
+                            img.post-image(src=post.img alt="게시글 이미지")
+
+                        if post.Comments && post.Comments.length > 0
+                            div.comments
+                                h4 댓글
+                                each comment in post.Comments
+                                    div.comment
+                                        p= comment.content
+                                        small 작성자: #{comment.User.name} | #{new Date(comment.createdAt).toLocaleDateString()}
+                        
+                        if user
+                            form.comment-form(action=`/comment/${post.id}` method="POST")
+                                input(type="text" name="content" placeholder="댓글을 입력하세요")
+                                button.btn(type="submit") 댓글 작성
+            else
+                p 게시글이 없습니다.
+
